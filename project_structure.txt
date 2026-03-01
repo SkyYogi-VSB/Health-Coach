@@ -1,0 +1,9 @@
+health-coach/
+├── .env.example
+├── .gitignore
+├── ai_coach.py
+├── bot.py
+├── deploy.sh
+├── health_coach.service
+├── memory.py
+└── requirements.txt

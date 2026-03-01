@@ -1,0 +1,24 @@
+[Unit]
+Description=Telegram AI Health Coach Bot
+After=network.target
+
+[Service]
+# User and group that the service will run as (we'll set this to the GCP default user)
+User=<your-username>
+Group=<your-username>
+
+# The directory where your code is located
+WorkingDirectory=/home/<your-username>/health-coach
+
+# The exact command to run the bot using the virtual environment
+ExecStart=/home/<your-username>/health-coach/venv/bin/python3 /home/<your-username>/health-coach/bot.py
+
+# Restart the bot automatically if it crashes
+Restart=always
+RestartSec=10
+
+# Load environment variables (Not strictly needed if using .env, but good practice)
+Environment="PATH=/home/<your-username>/health-coach/venv/bin:$PATH"
+
+[Install]
+WantedBy=multi-user.target
