@@ -76,5 +76,20 @@ Want the bot to run 24/7 without keeping your computer on? We have included an a
 
 *Note: The deployment script dynamically replaces placeholder usernames in `health_coach.service` with your actual GCP VM username during the setup phase.*
 
+### Option C: Automated CI/CD with GitHub Actions (Optional)
+If you want to automate deployments so that any code pushed to the `main` branch automatically updates your GCP VM, you can use the included GitHub Actions workflow (`.github/workflows/deploy.yml`).
+
+**Prerequisites:**
+- You must have already completed **Option B** to initially provision the VM and set up your `.env`.
+- Ensure your repository is cloned on the GCP VM in the `~/health-coach` directory (if deployed via `deploy.sh`, you may need to SSH into the VM, backup your `.env` and `health_coach.db`, and run `git clone` there).
+
+**Setup Steps:**
+1. Go to your GitHub repository -> **Settings** -> **Secrets and variables** -> **Actions** -> **New repository secret**.
+2. Add the following three secrets:
+   - `GCP_VM_IP`: The external IP address of your GCP cloud instance.
+   - `GCP_USERNAME`: The username used for SSH access on the VM.
+   - `GCP_SSH_PRIVATE_KEY`: An SSH private key authorized to connect to your VM.
+3. Once configured, every push to the `main` branch will seamlessly trigger a Git Pull and service restart on your VM without overwriting your sensitive files!
+
 ## 🔒 Security Note
 This bot is designed for personal use. The `ALLOWED_TELEGRAM_USER_IDS` environment variable ensures that only authorized users can chat with the bot. Requests from any other Telegram IDs will be ignored.
