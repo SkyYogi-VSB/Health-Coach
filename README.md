@@ -56,6 +56,27 @@ Want to run the bot on your own laptop or Raspberry Pi? We included a handy exec
    ```
 *(To stop the background bot safely, run `pkill -f bot.py`)*
 
+### Option A.2: Manual Systemd Setup (Linux / Cloud VM)
+If you pulled the repository manually into a Linux server or cloud VM and want to run it reliably as a system background service, we have included an automated script to handle the systemd service creation.
+
+1. Clone the repository and navigate to the directory:
+   ```bash
+   git clone https://github.com/yourusername/health-coach.git
+   cd health-coach
+   ```
+2. Create your environment file:
+   ```bash
+   cp .env.example .env
+   ```
+3. Open `.env` and fill in your actual credentials.
+4. Run the automated background service installer script! This script will automatically create the virtual environment, install dependencies, inject your username into the systemd service paths, enable the service, and start it.
+   ```bash
+   chmod +x install_service.sh
+   ./install_service.sh
+   ```
+
+*(After running, use `sudo systemctl status health_coach.service` to check its status or `sudo journalctl -u health_coach.service -f` to see the live logs.)*
+
 ---
 
 ### Option B: Deploy to Cloud (24/7 Free GCP)
