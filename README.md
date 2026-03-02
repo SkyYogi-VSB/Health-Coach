@@ -1,12 +1,13 @@
 # Telegram AI Health Coach Bot
 
-A powerful, Python-based Telegram bot that acts as a personal health, nutrition, and fitness coach. It dynamically supports **both NVIDIA NIMs (Nemotron/Llama Vision)** and **Google Gemini (Flash/Pro)** via a simple configuration toggle to automatically track your meals, workouts, and provide personalized advice in a friendly, conversational manner. No more complicated apps—just send a message, voice note, or photo!
+A powerful, Python-based Telegram bot that acts as a personal health, nutrition, and fitness coach. For version 2, we have streamlined the architecture to use **Google Gemini (Flash/Pro)** as a unified, all-in-one multimodal backend to seamlessly process text, meal photos, and voice notes. *(Note: For users who prefer the original dual-routing approach, **NVIDIA NIMs** support remains heavily featured and available in the v1 codebase!)*
 
-## 🚀 Features
-- **Multi-Model AI Coaching**: Powered by your choice of NVIDIA NIMs (Nemotron, Llama Vision, Whisper) or Google's Gemini models for fast, intelligent, and context-aware responses!
-- **Multi-Modal Understanding**: Send text or photos! Snap a picture of your meal, and the bot will estimate calories and macros.
+## 🚀 Features (v2)
+- **Unified Multimodal Engine**: Powered by Google Gemini to intelligently process text chats, transcribe audio voice notes, and visually estimate calories from your meal photos in one seamless flow.
+- **NLP Onboarding & Timezone Support**: Just tell the bot where you live and when you eat (e.g., "I'm in NY and eat lunch at 1pm"). It uses NLP to automatically configure your internal timezone and schedule.
+- **Proactive Engagement**: Automatically sends daily breakfast plans, meal check-ins at your typical eating times, and weekly summary reports if you have pending goals or missed workouts.
+- **Nutritional Pushback**: The AI actively protests and keeps you accountable if you try to log a meal that breaks your daily caloric or protein goals.
 - **Long-term Memory**: Remembers your fitness goals, past conversations, and preferences using SQLite.
-- **Proactive Engagement**: Automatically sends daily reminders and weekly summary reports if you have pending goals or missed workouts.
 - **GCP Automated Deployment**: Comes with a built-in bash script for completely automated deployment to Google Cloud Platform.
 
 ## 📂 Project Structure
@@ -28,7 +29,7 @@ This bot can be run either locally on your own machine (Mac, Windows, Linux, Ras
 
 ### 1. Prerequisites (For Both Options)
 - A Telegram Bot Token (from [@BotFather](https://t.me/botfather) on Telegram)
-- An **NVIDIA API Key** (from [NVIDIA API Catalog](https://build.nvidia.com/)) OR a **Gemini API Key** (from [Google AI Studio](https://aistudio.google.com/))
+- A **Gemini API Key** (from [Google AI Studio](https://aistudio.google.com/))
 - Your Telegram User ID (to restrict access so only *you* can use the bot)
 
 ### Option A: Run Locally (Desktop / Home Server)
@@ -46,8 +47,6 @@ Want to run the bot on your own laptop or Raspberry Pi? We included a handy exec
 3. Open `.env` and fill in your actual credentials.
    ```env
    TELEGRAM_BOT_TOKEN="your-telegram-bot-token"
-   AI_PROVIDER="nvidia"  # Options: 'nvidia' or 'gemini'
-   NVIDIA_API_KEY="your-nvidia-api-key"
    GEMINI_API_KEY="your-gemini-api-key"
    ALLOWED_TELEGRAM_USER_IDS="[Your Telegram User ID]" 
    ```
