@@ -123,6 +123,16 @@ def get_recent_context(user_id: int, limit: int = 20) -> str:
     ''', (user_id, last_id, limit))
     
     rows = cursor.fetchall()
+    # Get the latest weights
+    cursor.execute('''
+        SELECT weight_lbs, timestamp 
+        FROM weight_logs 
+        WHERE user_id = ?
+        ORDER BY timestamp DESC
+        LIMIT 5
+    ''', (user_id,))
+    weight_rows = cursor.fetchall()
+    
     conn.close()
     
     rows.reverse()
@@ -130,6 +140,13 @@ def get_recent_context(user_id: int, limit: int = 20) -> str:
     context_str = ""
     if summary_text:
         context_str += f"[Rolling Conversation Summary]:\n{summary_text}\n\n"
+        
+    if weight_rows:
+        weight_rows.reverse()
+        context_str += "[Recent Weight Logs]:\n"
+        for weight, ts in weight_rows:
+            context_str += f"[{ts}] {weight} lbs\n"
+        context_str += "\n"
         
     context_str += "Recent Unsummarized Messages:\n"
     if not rows and not summary_text:
@@ -325,6 +342,7 @@ def update_user_goals(user_id: int, calories: int, protein: int):
     """Updates the user's daily calorie and protein goals."""
     conn = sqlite3.connect(DB_FILE)
     cursor = conn.cursor()
+    cursor.execute("INSERT OR IGNORE INTO users (user_id, timezone, daily_calories_goal, daily_protein_goal) VALUES (?, 'UTC', 2000, 150)", (user_id,))
     cursor.execute('''
         UPDATE users 
         SET daily_calories_goal = ?, daily_protein_goal = ?
@@ -337,6 +355,7 @@ def update_timezone(user_id: int, timezone: str):
     """Updates the user's timezone."""
     conn = sqlite3.connect(DB_FILE)
     cursor = conn.cursor()
+    cursor.execute("INSERT OR IGNORE INTO users (user_id, timezone, daily_calories_goal, daily_protein_goal) VALUES (?, 'UTC', 2000, 150)", (user_id,))
     cursor.execute('''
         UPDATE users 
         SET timezone = ?
@@ -349,6 +368,7 @@ def update_meal_times(user_id: int, lunch_time: str, dinner_time: str):
     """Updates the user's preferred lunch and dinner times."""
     conn = sqlite3.connect(DB_FILE)
     cursor = conn.cursor()
+    cursor.execute("INSERT OR IGNORE INTO users (user_id, timezone, daily_calories_goal, daily_protein_goal) VALUES (?, 'UTC', 2000, 150)", (user_id,))
     cursor.execute('''
         UPDATE users 
         SET lunch_time = ?, dinner_time = ?
